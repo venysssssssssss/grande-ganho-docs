@@ -1,0 +1,18 @@
+{
+  "audience": "public",
+  "pages": [
+    "index.md",
+    "arquitetura.md",
+    "fluxos.md",
+    "decisoes.md",
+    "telas.md",
+    "contratos.md",
+    "seguranca.md",
+    "operacao.md",
+    "reuniao.md"
+  ],
+  "assets": [
+    "openapi.json"
+  ],
+  "base": "/grande-ganho-docs/"
+}

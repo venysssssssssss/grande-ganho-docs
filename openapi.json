@@ -1,0 +1,7446 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Potência API",
+    "version": "0.1.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "cookieSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "potencia"
+      }
+    },
+    "schemas": {}
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/auth/session": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "idToken",
+                  "transport"
+                ],
+                "properties": {
+                  "idToken": {
+                    "minLength": 1,
+                    "maxLength": 16384,
+                    "type": "string"
+                  },
+                  "transport": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "web"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "native"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/organizations": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/context": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/openapi.json": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/internal-docs": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/internal-docs/{*}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "*",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/clubs": {
+      "get": {
+        "tags": [
+          "clubs"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "clubs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/clubs/{id}": {
+      "patch": {
+        "tags": [
+          "clubs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/companies": {
+      "get": {
+        "tags": [
+          "companies"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "companies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "segment": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "city": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/companies/{id}": {
+      "patch": {
+        "tags": [
+          "companies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "segment": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "city": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/people": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "people"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "email": {
+                    "format": "email",
+                    "maxLength": 254,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "companyId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/people/{id}": {
+      "patch": {
+        "tags": [
+          "people"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "email": {
+                        "format": "email",
+                        "maxLength": 254,
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "companyId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/programs": {
+      "get": {
+        "tags": [
+          "programs"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "programs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "clubId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "durationMonths": {
+                    "minimum": 1,
+                    "maximum": 120,
+                    "default": 12,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/programs/{id}": {
+      "patch": {
+        "tags": [
+          "programs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "clubId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "durationMonths": {
+                        "minimum": 1,
+                        "maximum": 120,
+                        "default": 12,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/cohorts": {
+      "get": {
+        "tags": [
+          "cohorts"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cohorts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name",
+                  "programId"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "programId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/cohorts/{id}": {
+      "patch": {
+        "tags": [
+          "cohorts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/portfolios": {
+      "get": {
+        "tags": [
+          "portfolios"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "portfolios"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name",
+                  "ownerId"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "ownerId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/portfolios/{id}": {
+      "patch": {
+        "tags": [
+          "portfolios"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments": {
+      "get": {
+        "tags": [
+          "enrollments"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "enrollments"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "personId",
+                  "programId",
+                  "startsOn",
+                  "endsOn"
+                ],
+                "properties": {
+                  "personId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "programId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "cohortId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "companyId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "mentorId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ownerId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "startsOn": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "endsOn": {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "active"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "paused"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "completed"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "cancelled"
+                        ]
+                      }
+                    ]
+                  },
+                  "renewalOn": {
+                    "format": "date",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "contractMinor": {
+                    "pattern": "^(0|[1-9][0-9]{0,29})$",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "currency": {
+                    "pattern": "^[A-Z]{3}$",
+                    "default": "BRL",
+                    "type": "string"
+                  },
+                  "stage": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}": {
+      "patch": {
+        "tags": [
+          "enrollments"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "companyId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "mentorId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "startsOn": {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      "endsOn": {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "active"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "paused"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "completed"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "cancelled"
+                            ]
+                          }
+                        ]
+                      },
+                      "renewalOn": {
+                        "format": "date",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "contractMinor": {
+                        "pattern": "^(0|[1-9][0-9]{0,29})$",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "currency": {
+                        "pattern": "^[A-Z]{3}$",
+                        "default": "BRL",
+                        "type": "string"
+                      },
+                      "stage": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/pillars": {
+      "get": {
+        "tags": [
+          "pillars"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pillars"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "programId",
+                  "name"
+                ],
+                "properties": {
+                  "programId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "sensitive": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "freshnessDays": {
+                    "minimum": 1,
+                    "maximum": 365,
+                    "default": 30,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/pillars/{id}": {
+      "patch": {
+        "tags": [
+          "pillars"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "freshnessDays": {
+                        "minimum": 1,
+                        "maximum": 365,
+                        "default": 30,
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/sessions": {
+      "get": {
+        "tags": [
+          "sessions"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sessions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "title",
+                  "startsAt"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "startsAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "endsAt": {
+                    "format": "date-time",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "scheduled"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "completed"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "cancelled"
+                        ]
+                      }
+                    ]
+                  },
+                  "summary": {
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/sessions/{id}": {
+      "patch": {
+        "tags": [
+          "sessions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "startsAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "endsAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "scheduled"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "completed"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "cancelled"
+                            ]
+                          }
+                        ]
+                      },
+                      "summary": {
+                        "minLength": 1,
+                        "maxLength": 4000,
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/contacts": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "contacts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "kind",
+                  "occurredAt",
+                  "summary"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "call"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "meeting"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "check_in"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "other"
+                        ]
+                      }
+                    ]
+                  },
+                  "occurredAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "summary": {
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/plans": {
+      "get": {
+        "tags": [
+          "plans"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "title"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "active"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "archived"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/plans/{id}": {
+      "patch": {
+        "tags": [
+          "plans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "active"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "archived"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/goals": {
+      "get": {
+        "tags": [
+          "goals"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "goals"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "planId",
+                  "title"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "planId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "currentValue": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "unit": {
+                    "minLength": 1,
+                    "maxLength": 40,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "state": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "pending"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "completed"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "cancelled"
+                        ]
+                      }
+                    ]
+                  },
+                  "dueAt": {
+                    "format": "date-time",
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/goals/{id}": {
+      "patch": {
+        "tags": [
+          "goals"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "currentValue": {
+                        "type": "number",
+                        "nullable": true
+                      },
+                      "unit": {
+                        "minLength": 1,
+                        "maxLength": 40,
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "state": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "pending"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "completed"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "cancelled"
+                            ]
+                          }
+                        ]
+                      },
+                      "dueAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/actions": {
+      "get": {
+        "tags": [
+          "actions"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "actions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "title",
+                  "rationale"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "planId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "goalId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "type": "string"
+                  },
+                  "priority": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "normal"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "high"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "critical"
+                        ]
+                      }
+                    ]
+                  },
+                  "ownerId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "dueAt": {
+                    "format": "date-time",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "evidenceRequired": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/actions/{id}": {
+      "patch": {
+        "tags": [
+          "actions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "type": "string"
+                      },
+                      "priority": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "normal"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "high"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "critical"
+                            ]
+                          }
+                        ]
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "dueAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "evidenceRequired": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/risks": {
+      "get": {
+        "tags": [
+          "risks"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "risks"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "title",
+                  "severity",
+                  "reason"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "severity": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "attention"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "critical"
+                        ]
+                      }
+                    ]
+                  },
+                  "reason": {
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "type": "string"
+                  },
+                  "ownerId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "dueAt": {
+                    "format": "date-time",
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/risks/{id}": {
+      "patch": {
+        "tags": [
+          "risks"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "minLength": 1,
+                        "maxLength": 240,
+                        "type": "string"
+                      },
+                      "severity": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "attention"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "critical"
+                            ]
+                          }
+                        ]
+                      },
+                      "reason": {
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "type": "string"
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "dueAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/consents": {
+      "get": {
+        "tags": [
+          "consents"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "consents"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "purpose",
+                  "policyVersion",
+                  "expiresAt"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "purpose": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "policyVersion": {
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/grants": {
+      "get": {
+        "tags": [
+          "grants"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "grants"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "granteeId",
+                  "consentId",
+                  "purpose",
+                  "expiresAt"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "granteeId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "pillarId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "consentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "purpose": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/saved-views": {
+      "get": {
+        "tags": [
+          "saved-views"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "saved-views"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "name",
+                  "filters"
+                ],
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "type": "string"
+                  },
+                  "filters": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "limit": {
+                        "minimum": 1,
+                        "maximum": 100,
+                        "default": 25,
+                        "type": "integer"
+                      },
+                      "cursor": {
+                        "minLength": 1,
+                        "maxLength": 512,
+                        "type": "string"
+                      },
+                      "search": {
+                        "minLength": 1,
+                        "maxLength": 120,
+                        "type": "string"
+                      },
+                      "enrollmentId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "state": {
+                        "minLength": 1,
+                        "maxLength": 32,
+                        "type": "string"
+                      },
+                      "sort": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "createdAt"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "dueAt"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "updatedAt"
+                            ]
+                          }
+                        ]
+                      },
+                      "filter": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "all"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "critical"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "attention"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "renewal"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "overdue"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "no_next_action"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "no_owner"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "stale"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/saved-views/{id}": {
+      "patch": {
+        "tags": [
+          "saved-views"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "changes"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "changes": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "minLength": 1,
+                        "maxLength": 120,
+                        "type": "string"
+                      },
+                      "filters": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "properties": {
+                          "limit": {
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 25,
+                            "type": "integer"
+                          },
+                          "cursor": {
+                            "minLength": 1,
+                            "maxLength": 512,
+                            "type": "string"
+                          },
+                          "search": {
+                            "minLength": 1,
+                            "maxLength": 120,
+                            "type": "string"
+                          },
+                          "enrollmentId": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "ownerId": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "state": {
+                            "minLength": 1,
+                            "maxLength": 32,
+                            "type": "string"
+                          },
+                          "sort": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "createdAt"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "name"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dueAt"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "updatedAt"
+                                ]
+                              }
+                            ]
+                          },
+                          "filter": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "all"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "critical"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "attention"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "renewal"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "overdue"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "no_next_action"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "no_owner"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "stale"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/portfolio": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/attention": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/pillars": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/progress": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/timeline": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/360": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/briefing": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/pillars/{id}/history": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": true
+          },
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/assessments": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "pillarId",
+                  "status",
+                  "source",
+                  "observedAt"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "pillarId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "positive"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "attention"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "critical"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "unknown"
+                        ]
+                      }
+                    ]
+                  },
+                  "score": {
+                    "minimum": 0,
+                    "maximum": 10,
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "trend": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "up"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "flat"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "down"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "unknown"
+                        ]
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "type": "string"
+                  },
+                  "observedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "note": {
+                    "minLength": 1,
+                    "maxLength": 16000,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "evidenceIds": {
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "purpose": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/actions/{id}/state": {
+      "patch": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "state"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "state": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "pending"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "in_progress"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "completed"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "cancelled"
+                        ]
+                      }
+                    ]
+                  },
+                  "evidenceIds": {
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/operational-assessment": {
+      "patch": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "status",
+                  "rationale",
+                  "evidenceIds",
+                  "version"
+                ],
+                "properties": {
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "positive"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "attention"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "critical"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "unknown"
+                        ]
+                      }
+                    ]
+                  },
+                  "score": {
+                    "minimum": 0,
+                    "maximum": 100,
+                    "type": "integer",
+                    "nullable": true
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "type": "string"
+                  },
+                  "evidenceIds": {
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/risks/{id}/state": {
+      "patch": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "state"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "state": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "open"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "resolved"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/grants/{id}/revoke": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/consents/{id}/revoke": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/users/{id}": {
+      "patch": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "version",
+                  "role",
+                  "active"
+                ],
+                "properties": {
+                  "version": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "owner"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "executive"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "cs"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "mentor"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "operations"
+                        ]
+                      }
+                    ]
+                  },
+                  "active": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/portfolios/{id}/enrollments": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{id}/assignments": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "userId"
+                ],
+                "properties": {
+                  "userId": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/audit": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "enrollmentId",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ownerId",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "state",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "createdAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "name"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "dueAt"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "updatedAt"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "critical"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "attention"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "renewal"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "overdue"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_next_action"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "no_owner"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "stale"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "filter",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "header",
+            "name": "x-organization-id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/imports": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "resource",
+                  "csv"
+                ],
+                "properties": {
+                  "resource": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "people"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "companies"
+                        ]
+                      }
+                    ]
+                  },
+                  "csv": {
+                    "minLength": 1,
+                    "maxLength": 1048576,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/exports": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "portfolio"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "actions"
+                        ]
+                      }
+                    ]
+                  },
+                  "filters": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "limit": {
+                        "minimum": 1,
+                        "maximum": 100,
+                        "default": 25,
+                        "type": "integer"
+                      },
+                      "cursor": {
+                        "minLength": 1,
+                        "maxLength": 512,
+                        "type": "string"
+                      },
+                      "search": {
+                        "minLength": 1,
+                        "maxLength": 120,
+                        "type": "string"
+                      },
+                      "enrollmentId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "ownerId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "state": {
+                        "minLength": 1,
+                        "maxLength": 32,
+                        "type": "string"
+                      },
+                      "sort": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "createdAt"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "dueAt"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "updatedAt"
+                            ]
+                          }
+                        ]
+                      },
+                      "filter": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "all"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "critical"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "attention"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "renewal"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "overdue"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "no_next_action"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "no_owner"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "stale"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{id}/download": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/evidence": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enrollmentId",
+                  "title",
+                  "contentType",
+                  "size",
+                  "sensitivity"
+                ],
+                "properties": {
+                  "enrollmentId": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "title": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  },
+                  "contentType": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "application/pdf"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "image/png"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "image/jpeg"
+                        ]
+                      }
+                    ]
+                  },
+                  "size": {
+                    "minimum": 1,
+                    "maximum": 10485760,
+                    "type": "integer"
+                  },
+                  "sensitivity": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "operational"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "sensitive"
+                        ]
+                      }
+                    ]
+                  },
+                  "pillarId": {
+                    "format": "uuid",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "purpose": {
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/evidence/{id}/content": {
+      "put": {
+        "parameters": [
+          {
+            "schema": {
+              "maxLength": 240,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "purpose",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/evidence/{id}/download": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "maxLength": 240,
+              "type": "string"
+            },
+            "in": "query",
+            "name": "purpose",
+            "required": false
+          },
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "session": []
+    },
+    {
+      "cookieSession": []
+    }
+  ]
+}

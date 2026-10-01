@@ -1,0 +1,1 @@
+import{_ as a,o,c as i,a2 as r}from"./chunks/framework.VjMZkWOe.js";const m=JSON.parse('{"title":"Potência Success OS","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),s={name:"index.md"};function t(n,e,d,c,l,p){return o(),i("div",null,[...e[0]||(e[0]=[r("",12)])])}const h=a(s,[["render",t]]);export{m as __pageData,h as default};
